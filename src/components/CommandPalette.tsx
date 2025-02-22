@@ -295,6 +295,20 @@ const CommandPalette = () => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
 
+  useEffect(() => {
+    const handleKeyboardShortcut = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        if (isOpen) {
+          closePalette();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyboardShortcut);
+    return () => window.removeEventListener('keydown', handleKeyboardShortcut);
+  }, [isOpen, closePalette]);
+
   if (!isOpen) return null;
 
   const getInputPrefix = () => {
