@@ -141,33 +141,35 @@ const CommandPalette = () => {
         return matchesSearch && !isSection && !isSubCommand;
       });
 
-      if (matchingCommands.length > 0) {
-        const result: Command[] = [];
-        const topResult = matchingCommands[0];
-
-        result.push(
-          { id: "top-result", name: "Top result", type: 'topResult', action: () => {}, isSection: true },
-          { ...topResult, isTopResult: true }
-        );
-
-        const pageCommands = matchingCommands.filter(cmd => cmd.section === "pages" && cmd.id !== topResult.id);
-        if (pageCommands.length > 0) {
-          result.push(
-            { id: "pages-section", name: "Pages", type: 'section', action: () => {}, isSection: true },
-            ...pageCommands
-          );
-        }
-
-        const settingsCommands = matchingCommands.filter(cmd => cmd.section === "settings" && cmd.id !== topResult.id);
-        if (settingsCommands.length > 0) {
-          result.push(
-            { id: "settings-section", name: "Settings", type: 'section', action: () => {}, isSection: true },
-            ...settingsCommands
-          );
-        }
-
-        return result;
+      if (matchingCommands.length === 0) {
+        return [];
       }
+
+      const result: Command[] = [];
+      const topResult = matchingCommands[0];
+
+      result.push(
+        { id: "top-result", name: "Top result", type: 'topResult', action: () => {}, isSection: true },
+        { ...topResult, isTopResult: true }
+      );
+
+      const pageCommands = matchingCommands.filter(cmd => cmd.section === "pages" && cmd.id !== topResult.id);
+      if (pageCommands.length > 0) {
+        result.push(
+          { id: "pages-section", name: "Pages", type: 'section', action: () => {}, isSection: true },
+          ...pageCommands
+        );
+      }
+
+      const settingsCommands = matchingCommands.filter(cmd => cmd.section === "settings" && cmd.id !== topResult.id);
+      if (settingsCommands.length > 0) {
+        result.push(
+          { id: "settings-section", name: "Settings", type: 'section', action: () => {}, isSection: true },
+          ...settingsCommands
+        );
+      }
+
+      return result;
     }
 
     return commands.filter(command => !command.parentId);
