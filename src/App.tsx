@@ -1,6 +1,7 @@
 import { Routes, Route, Link } from "react-router-dom";
 import { About, Home, Users } from "./page";
 import { useCommandPaletteHandler } from "./hooks/useCommandPaletteHandler";
+import { CommandItem } from "./components";
 
 function App() {
   useCommandPaletteHandler();
