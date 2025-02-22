@@ -1,7 +1,10 @@
 import { Routes, Route, Link } from "react-router-dom";
 import { About, Home, Users } from "./page";
+import { useCommandPaletteHandler } from "./hooks/useCommandPaletteHandler";
 
 function App() {
+  useCommandPaletteHandler();
+
   return (
     <div className="App">
       <header style={{ backgroundColor: "lightgray", padding: "20px", textAlign: "center"}}>
