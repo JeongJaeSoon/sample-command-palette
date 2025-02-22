@@ -1,13 +1,14 @@
 import { Routes, Route, Link } from "react-router-dom";
 import { About, Home, Users } from "./page";
 import { useCommandPaletteHandler } from "./hooks/useCommandPaletteHandler";
-import { CommandItem } from "./components";
+import { CommandItem, CommandPalette } from "./components";
 
 function App() {
   useCommandPaletteHandler();
 
   return (
     <div className="App">
+      <CommandPalette />
       <header style={{ backgroundColor: "lightgray", padding: "20px", textAlign: "center"}}>
         <ul style={{ display: "flex", gap: "4rem", listStyle: "none", textAlign: "center", margin: "0 auto", width: "fit-content" }}>
           <li style={{width: "6rem"}}><Link to="/">Home</Link></li>
