@@ -1,11 +1,9 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useCommandPalette } from "../stores/commandPaletteStore";
-import CommandItem from "./CommandItem";
-import CommandSection from "./CommandSection";
-import { useNavigate } from "react-router-dom";
-import { Footer } from ".";
 import { Command } from "../types/command";
+import { CommandSearch, CommandItem, CommandSection, Footer } from ".";
 
 const Overlay = styled.div`
   position: fixed;
@@ -26,62 +24,6 @@ const Container = styled.div`
   border-radius: 12px;
   box-shadow: 0 0.5rem rgba(0, 0, 0, 0.1);
   overflow: hidden;
-`;
-
-const SearchContainer = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
-  padding: 12px 16px;
-  // background: #f8f9fa;
-  border-bottom: 1px solid #eaeaea;
-`;
-
-const SearchIcon = styled.div`
-  color: #57606a;
-  margin-right: 12px;
-  font-size: 16px;
-`;
-
-const SearchPrefix = styled.span`
-  color: #57606a;
-  margin-right: 8px;
-`;
-
-const SearchInput = styled.input`
-  flex: 1;
-  padding: 8px 0;
-  border: none;
-  background: transparent;
-  font-size: 16px;
-  font-family: inherit;
-  outline: none;
-  position: relative;
-  z-index: 2;
-  color: #24292f;
-  caret-color: #24292f;
-
-  &::placeholder {
-    color: #999;
-  }
-`;
-
-const SearchSuggestion = styled.span`
-  position: absolute;
-  left: 44px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #999;
-  font-size: 16px;
-  font-family: inherit;
-  pointer-events: none;
-  z-index: 1;
-  padding: 8px 0;
-  background: transparent;
-  width: calc(100% - 54px);
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
 `;
 
 const CommandList = styled.div`
@@ -375,22 +317,13 @@ const CommandPalette = () => {
   return (
     <Overlay onClick={closePalette}>
       <Container onClick={(e) => e.stopPropagation()}>
-        <SearchContainer>
-          <SearchIcon>🔍</SearchIcon>
-          {activeParentId && <SearchPrefix>{getInputPrefix()}</SearchPrefix>}
-          <SearchInput
-            autoFocus
-            placeholder="명령어를 입력하세요..."
-            value={search}
-            onChange={handleInputChange}
-          />
-          {suggestion && (
-            <SearchSuggestion>
-              {suggestion.typed}
-              {suggestion.suggestion}
-            </SearchSuggestion>
-          )}
-        </SearchContainer>
+        <CommandSearch
+          search={search}
+          onChange={handleInputChange}
+          suggestion={suggestion}
+          activeParentId={activeParentId}
+          getInputPrefix={getInputPrefix}
+        />
         <CommandList>
           {filteredCommands.length === 0 ? (
             <EmptyState>검색 결과가 없습니다</EmptyState>
