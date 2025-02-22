@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useCommandPalette } from "../stores/commandPaletteStore";
 import { Command } from "../types/command";
-import { CommandSearch, CommandItem, CommandSection, Footer } from ".";
+import { CommandSearch, CommandList, Footer } from ".";
 
 const Overlay = styled.div`
   position: fixed;
@@ -24,17 +24,6 @@ const Container = styled.div`
   border-radius: 12px;
   box-shadow: 0 0.5rem rgba(0, 0, 0, 0.1);
   overflow: hidden;
-`;
-
-const CommandList = styled.div`
-  max-height: 400px;
-  overflow-y: auto;
-`;
-
-const EmptyState = styled.div`
-  padding: 16px;
-  text-align: center;
-  color: #666;
 `;
 
 const CommandPalette = () => {
@@ -324,92 +313,16 @@ const CommandPalette = () => {
           activeParentId={activeParentId}
           getInputPrefix={getInputPrefix}
         />
-        <CommandList>
-          {filteredCommands.length === 0 ? (
-            <EmptyState>검색 결과가 없습니다</EmptyState>
-          ) : (
-            <>
-              {activeParentId ? (
-                // 서브메뉴 표시
-                filteredCommands.map((command, index) => (
-                  <CommandItem
-                    key={command.id}
-                    name={command.name}
-                    icon={command.icon}
-                    isSelected={index === selectedIndex}
-                    onClick={() => {
-                      command.action();
-                      closePalette();
-                    }}
-                    type={command.type}
-                    hasSubCommands={false}
-                  />
-                ))
-              ) : (
-                <>
-                  {search && filteredCommands.find(cmd => cmd.isTopResult) && (
-                    <>
-                      <CommandItem
-                        key="top-result"
-                        name="Top result"
-                        type="topResult"
-                        isSection={true}
-                        isSelected={false}
-                        onClick={() => {}}
-                      />
-                      {filteredCommands
-                        .filter(cmd => cmd.isTopResult)
-                        .map((command, index) => (
-                          <CommandItem
-                            key={command.id}
-                            name={command.name}
-                            icon={command.icon}
-                            isSelected={index === selectedIndex}
-                            onClick={() => {
-                              command.action();
-                              closePalette();
-                            }}
-                            type={command.type}
-                            hasSubCommands={Boolean(command.subCommands)}
-                            isTopResult={true}
-                          />
-                        ))}
-                    </>
-                  )}
-
-                  {/* Pages Section */}
-                  {filteredCommands.some(cmd => cmd.section === "pages" && !cmd.isTopResult) && (
-                    <CommandSection
-                      title="Pages"
-                      commands={filteredCommands.filter(cmd => cmd.section === "pages" && !cmd.isTopResult)}
-                      selectedIndex={selectedIndex}
-                      startIndex={filteredCommands.findIndex(cmd => cmd.section === "pages" && !cmd.isTopResult)}
-                      onCommandClick={(command) => {
-                        command.action();
-                        closePalette();
-                      }}
-                    />
-                  )}
-
-                  {/* Settings Section */}
-                  {filteredCommands.some(cmd => cmd.section === "settings" && !cmd.isTopResult) && (
-                    <CommandSection
-                      title="Settings"
-                      commands={filteredCommands.filter(cmd => cmd.section === "settings" && !cmd.isTopResult)}
-                      selectedIndex={selectedIndex}
-                      startIndex={filteredCommands.findIndex(cmd => cmd.section === "settings" && !cmd.isTopResult)}
-                      onCommandClick={(command) => {
-                        command.action();
-                        closePalette();
-                      }}
-                      isLast={true}
-                    />
-                  )}
-                </>
-              )}
-            </>
-          )}
-        </CommandList>
+        <CommandList
+          filteredCommands={filteredCommands}
+          selectedIndex={selectedIndex}
+          activeParentId={activeParentId}
+          search={search}
+          onCommandClick={(command) => {
+            command.action();
+            closePalette();
+          }}
+        />
         <Footer activeParentId={activeParentId} />
       </Container>
     </Overlay>

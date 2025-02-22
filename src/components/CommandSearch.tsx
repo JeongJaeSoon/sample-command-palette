@@ -56,21 +56,21 @@ const SearchSuggestion = styled.span`
   text-overflow: ellipsis;
 `;
 
-interface CommandSearchProps {
+type Props = Readonly<{
   search: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   suggestion: { typed: string; suggestion: string } | null;
   activeParentId: string | null;
   getInputPrefix: () => string;
-}
+}>;
 
-const CommandSearch: React.FC<CommandSearchProps> = ({
+const CommandSearch = ({
   search,
   onChange,
   suggestion,
   activeParentId,
   getInputPrefix,
-}) => {
+}: Props) => {
   return (
     <SearchContainer>
       <SearchIcon>🔍</SearchIcon>
